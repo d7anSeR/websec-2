@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="media/style.css">
+    <script src="media/script.js"></script>
+    <title>ssau schedule</title>
+</head>
+
+<body>
+    <div class="container">
+        <p><h1>Расписание</h1></p>
+        <h3>Выбор группы:</h3>
+        <select id="group">
+            <option> Группа </option>
+        </select>
+        <h3>Выбор преподавателя:</h3>
+        <select id="teacher">
+            <option> Преподаватель </option>
+        </select>
+    </div>
+    <div class="schedule">
+        <div class="scheduleHeader">
+            <button id="previousButton" onclick="changeWeek(false)" class="weekButton">Предыдущая неделя</button>
+            <button id="previousDay" onclick="" class="dayButton">Предыдущий день</button>
+            <p id="selected"></p>
+            <button id="nextButton" onclick="changeWeek(true)" class="weekButton">Следующая неделя</button>
+            <button id="nextDay" onclick="" class="dayButton">Следующий день</button>
+        </div>
+    </div>
+    <div class="scheduleBody">
+        <table id="scheduleBody"></table>
+    </div>
+</body>
+</html>

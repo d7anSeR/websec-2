@@ -1,0 +1,197 @@
+/* Подключаем современный шрифт */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+@media (max-width: 1080px) {
+    .weekButton {
+        display: none;
+    }
+}
+
+@media (min-width: 1081px) {
+    .dayButton {
+        display: none;
+    }
+}
+
+* {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: linear-gradient(135deg, #1334f3 0%, #0a1fc7 100%);
+    font-weight: 400;
+    color: #2b415a;
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 12px;
+    padding: 25px;
+    width: 90%;
+    max-width: 1200px;
+    border: 2px solid rgba(13, 41, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(19, 52, 243, 0.15);
+    backdrop-filter: blur(4px);
+}
+
+.schedule {
+    font-size: 18px;
+    margin: 25px auto;
+    border-radius: 12px;
+    padding: 25px;
+    width: 90%;
+    max-width: 1200px;
+    border: 2px solid rgba(13, 41, 255, 0.3);
+    background-color: white;
+    box-shadow: 0 8px 24px rgba(19, 52, 243, 0.15);
+}
+
+.scheduleHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.scheduleBody {
+    margin: 25px auto;
+    border-radius: 12px;
+    padding: 25px;
+    width: 90%;
+    max-width: 1200px;
+    border: 2px solid rgba(13, 41, 255, 0.3);
+    background-color: white;
+    box-shadow: 0 8px 24px rgba(19, 52, 243, 0.15);
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1334f3;
+    border: 2px solid #0d29ffbd;
+    background-color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(13, 41, 255, 0.1);
+}
+
+button:hover {
+    background-color: #1334f3;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(19, 52, 243, 0.2);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+table {
+    font-size: 16px;
+    width: 100%;
+    border: 2px solid rgba(13, 41, 255, 0.2);
+    border-collapse: collapse;
+    text-align: center;
+    table-layout: fixed;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+td, th {
+    border: 1px solid rgba(43, 65, 90, 0.2);
+    padding: 15px;
+    width: 100px;
+}
+
+.tableHead {
+    background: linear-gradient(90deg, #1334f3 0%, #0d29ffbd 100%);
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+a {
+    color: #1b92d6;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+a:hover {
+    color: #1334f3;
+    text-decoration: underline;
+}
+
+/* Дополнительные улучшения */
+.select-group {
+    margin-bottom: 20px;
+}
+
+.select-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #2b415a;
+    font-size: 16px;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid rgba(13, 41, 255, 0.2);
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    appearance: none;
+}
+
+.custom-select:focus {
+    border-color: #1334f3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(19, 52, 243, 0.1);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container, .schedule, .scheduleBody {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container, .schedule, .scheduleBody {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    button {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
+    td, th {
+        padding: 10px;
+    }
+}

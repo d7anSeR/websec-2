@@ -1,0 +1,158 @@
+/* Подключаем современный шрифт Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+@media (max-width: 1080px) {
+    .weekButton {
+        display: none;
+    }
+}
+
+@media (min-width: 1081px) {
+    .dayButton {
+        display: none;
+    }
+}
+
+* {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #073be4;
+    font-weight: 500; /* Увеличиваем насыщенность шрифта */
+    color: #2c3e50; /* Добавляем цвет текста для лучшей читаемости */
+    line-height: 1.6; /* Улучшаем межстрочный интервал */
+}
+
+.container {
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 8px; /* Увеличиваем скругление углов */
+    padding: 25px; /* Увеличиваем отступы */
+    width: 80%;
+    max-width: 1200px; /* Добавляем максимальную ширину */
+    border: 2px solid #073be4; /* Утолщаем границу */
+    box-shadow: 0 4px 12px rgba(7, 59, 228, 0.2); /* Добавляем тень */
+}
+
+.schedule {
+    font-size: 18px; /* Немного уменьшаем размер шрифта */
+    margin: 20px auto;
+    border-radius: 8px;
+    padding: 25px;
+    width: 80%;
+    max-width: 1200px;
+    border: 2px solid #073be4;
+    box-shadow: 0 4px 12px rgba(7, 59, 228, 0.2);
+}
+
+.scheduleHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Выравниваем элементы по центру */
+    margin-bottom: 20px; /* Добавляем отступ снизу */
+}
+
+.scheduleBody {
+    margin: 20px auto;
+    border-radius: 8px;
+    padding: 25px;
+    width: 80%;
+    max-width: 1200px;
+    border: 2px solid #073be4;
+    box-shadow: 0 4px 12px rgba(7, 59, 228, 0.2);
+}
+
+button {
+    padding: 12px 24px; /* Увеличиваем отступы */
+    font-size: 16px; /* Немного уменьшаем размер шрифта */
+    font-weight: 600; /* Делаем текст полужирным */
+    color: #073be4; /* Используем основной синий цвет */
+    border: 2px solid #073be4;
+    background-color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Добавляем плавные переходы */
+}
+
+button:hover {
+    background-color: #073be4;
+    color: white;
+    transform: translateY(-2px); /* Добавляем эффект поднятия */
+    box-shadow: 0 4px 8px rgba(7, 59, 228, 0.3);
+}
+
+table {
+    font-size: 16px; /* Уменьшаем размер шрифта для таблицы */
+    width: 100%;
+    border: 2px solid #073be4; /* Утолщаем границу */
+    border-collapse: collapse;
+    text-align: center;
+    table-layout: fixed;
+    background: white;
+    margin-top: 20px; /* Добавляем отступ сверху */
+}
+
+td, th {
+    border: 1px solid #e0e0e0; /* Делаем границы более светлыми */
+    padding: 12px; /* Увеличиваем отступы в ячейках */
+    width: 100px;
+}
+
+.tableHead {
+    background-color: #073be4; /* Используем основной синий цвет */
+    color: white; /* Белый текст для контраста */
+    font-weight: 600; /* Полужирный текст в заголовках */
+}
+
+a {
+    color: #1b92d6;
+    text-decoration: none; /* Убираем подчёркивание */
+    transition: color 0.3s ease; /* Плавное изменение цвета */
+}
+
+a:hover {
+    color: #073be4; /* Изменяем цвет при наведении */
+    text-decoration: underline; /* Добавляем подчёркивание при наведении */
+}
+
+/* Дополнительные улучшения */
+.select-group {
+    margin-bottom: 20px;
+}
+
+.select-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.custom-select:focus {
+    border-color: #073be4;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(7, 59, 228, 0.1);
+}
+
+/* Анимация для кнопок */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+button:active {
+    animation: pulse 0.3s ease;
+    transform: translateY(0);
+}

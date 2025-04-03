@@ -1,93 +1,92 @@
-// server.js
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-const app = express();
-const port = 3000;
+let PORT = process.env.PORT || 5500;
+let XMLHttpRequest = require('xhr2');
+const HTMLParser = require('node-html-parser');
+const bp = require('body-parser');
+const fs = require("fs");
+let http = require('http');
+let path = require('path');
+let express = require('express');
+let app = express();
+const server = http.Server(app);
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
 
-// Кэш для хранения данных
-let cache = {
-    groups: null,
-    teachers: null,
-    schedule: {}
-};
+app.use(bp.json());
+app.use(bp.urlencoded({ extended: true }));
+app.use(express.static(__dirname));
+app.get('/', function(req, res) {
+    response.sendFile(path.join(__dirname, 'index.html'));
+});
+server.listen(PORT, () => {
+    console.log('Listening on 5500');
+});
 
-// Получение списка групп
-app.get('/api/groups', async (req, res) => {
-    try {
-        if (!cache.groups) {
-            const response = await axios.get('https://ssau.ru/rasp/api/v1/groups');
-            cache.groups = response.data;
+app.get('/rasp', (req, res) => {
+    let request = new XMLHttpRequest();
+    let url = "https://ssau.ru" + req.url;
+    request.open("GET", url, true);
+    request.send(null);
+    request.onreadystatechange = () => {
+        if (request.readyState == 4) {
+            let schedule = {
+                date: [],
+                daySchedule: [],
+                time: [],
+                currentWeek: 1,
+                selectedGroup: ''
+            };
+            let html = HTMLParser.parse(request.responseText);
+
+            for (let cell of html.querySelectorAll(".schedule__item")) {
+                if (cell.querySelector(".schedule__discipline")) {
+                    let cellGroups = [];
+                    if (!!cell.querySelectorAll(".schedule__group").length) {
+                        for (let group of cell.querySelectorAll(".schedule__group")) {
+                            if (group.innerText.trim() !== "") {
+                                cellGroups.push(JSON.stringify({
+                                    name: group.innerText,
+                                    link: group.getAttribute("href") ?? null
+                                }))
+                            } else {
+                                cellGroups.push(JSON.stringify({
+                                    name: "",
+                                    link: null
+                                }))
+                            }
+                        }
+                    } 
+                    schedule.daySchedule.push({
+                        subject: cell.querySelector(".schedule__discipline").innerText,
+                        place: cell.querySelector(".schedule__place").innerText,
+                        teacher: JSON.stringify(cell.querySelector(".schedule__teacher > .caption-text") === null ?
+                            {
+                                name: "",
+                                link: null,
+                            } :
+                            {
+                                name: cell.querySelector(".schedule__teacher > .caption-text") ? cell.querySelector(".schedule__teacher > .caption-text").innerText : "",
+                                link: cell.querySelector(".schedule__teacher > .caption-text").getAttribute("href")
+                            }),
+                        groups: cellGroups
+                    })
+                } else if (!!html.querySelectorAll(".schedule__item + .schedule__head").length && !schedule.date.length) {
+                    for (let cell of html.querySelectorAll(".schedule__item + .schedule__head")) {
+                        schedule.date.push(cell.childNodes[0].innerText + cell.childNodes[1].innerText)
+                    }
+                } else {
+                    schedule.daySchedule.push({
+                        subject: null
+                    })
+                }
+            }
+            for (let cell of html.querySelectorAll(".schedule__time")) {
+                schedule.time.push(cell.childNodes[0].innerText + cell.childNodes[1].innerText);
+            }
+            schedule.selectedGroup = html.querySelector(".info-block__title")?.innerText;
+            schedule.currentWeek = html.querySelector(".week-nav-current_week")?.innerText;
+            schedule.daySchedule = schedule.daySchedule.slice(6, schedule.daySchedule.length);
+            res.send(JSON.stringify(schedule));
         }
-        res.json(cache.groups);
-    } catch (error) {
-        console.error('Error fetching groups:', error);
-        res.status(500).json({ error: 'Failed to fetch groups' });
-    }
-});
+    };
+})
 
-// Получение списка преподавателей
-app.get('/api/teachers', async (req, res) => {
-    try {
-        if (!cache.teachers) {
-            const response = await axios.get('https://ssau.ru/rasp/api/v1/employees');
-            cache.teachers = response.data;
-        }
-        res.json(cache.teachers);
-    } catch (error) {
-        console.error('Error fetching teachers:', error);
-        res.status(500).json({ error: 'Failed to fetch teachers' });
-    }
-});
-
-// Получение расписания для группы
-app.get('/api/schedule/group/:groupId', async (req, res) => {
-    const { groupId } = req.params;
-    const { week } = req.query;
-
-    try {
-        if (!cache.schedule[groupId] || week) {
-            const url = `https://ssau.ru/rasp/api/v1/group/${groupId}?week=${week || ''}`;
-            const response = await axios.get(url);
-            cache.schedule[groupId] = response.data;
-        }
-        res.json(cache.schedule[groupId]);
-    } catch (error) {
-        console.error('Error fetching group schedule:', error);
-        res.status(500).json({ error: 'Failed to fetch group schedule' });
-    }
-});
-
-// Получение расписания для преподавателя
-app.get('/api/schedule/teacher/:teacherId', async (req, res) => {
-    const { teacherId } = req.params;
-    const { week } = req.query;
-
-    try {
-        const url = `https://ssau.ru/rasp/api/v1/employee/${teacherId}?week=${week || ''}`;
-        const response = await axios.get(url);
-        res.json(response.data);
-    } catch (error) {
-        console.error('Error fetching teacher schedule:', error);
-        res.status(500).json({ error: 'Failed to fetch teacher schedule' });
-    }
-});
-
-// Получение текущей учебной недели
-app.get('/api/current-week', async (req, res) => {
-    try {
-        const response = await axios.get('https://ssau.ru/rasp/api/v1/week');
-        res.json(response.data);
-    } catch (error) {
-        console.error('Error fetching current week:', error);
-        res.status(500).json({ error: 'Failed to fetch current week' });
-    }
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+app.get('/groupsAndTeachers', (req, res) => res.sendFile(path.join(__dirname, 'groupAndTeachers.json')))
